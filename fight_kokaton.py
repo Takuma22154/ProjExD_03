@@ -43,7 +43,7 @@ class Bird:
         """
         img0 = pg.transform.rotozoom(pg.image.load(f"ex03/fig/{num}.png"), 0, 2.0)
         img = pg.transform.flip(img0, True, False)
-        self.imgs = {
+        self.imgs = {  # こうかとんの進行方向ごとの体の向きに応じた画像の読み込み
             (+5, 0): img,
             (+5, -5): pg.transform.rotozoom(img, 45, 1.0),
             (0, -5): pg.transform.rotozoom(img, 90, 1.0),
@@ -152,8 +152,11 @@ class Explosion:
         self.rct.y = bomb.rct.centery
         self.life = 100
 
-    def update(self, screen, life):  # 時間に応じた画像の変更（未動作）
-        if life >= 50:
+    def update(self, screen, life): 
+        """
+        時間に応じた画像の変更（未動作）
+        """
+        if life >= 50:  # 196~198行間のwhile文を用いてlife値を減少させ、規定値未満になったのち画像を切り替える
             screen.blit(self.imgs[0], self.rct)
         else:
             screen.blit(self.imgs[1], self.rct)
