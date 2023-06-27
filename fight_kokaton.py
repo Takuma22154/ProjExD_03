@@ -170,6 +170,8 @@ def main():
             if bomb.rct.colliderect (beam.rct):
                 bomb = None
                 beam = None
+                bird.change_img(6, screen)
+                pg.display.update()
 
 
 if __name__ == "__main__":
