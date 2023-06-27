@@ -115,6 +115,7 @@ class Bomb:
         self.rct.move_ip(self.vx, self.vy)
         screen.blit(self.img, self.rct)
 
+
 class Beam:
     """
     こうかとんが射出するビームに関するクラス
@@ -138,6 +139,27 @@ class Beam:
         self.rct.move_ip(self.vx, self.vy)
         screen.blit(self.img, self.rct)
 
+
+class Explosion:
+    """
+    爆弾を撃ち落とした時のエフェクト表示に関するクラス
+    """
+    def __init__(self, bomb:Bomb):
+        exp_img = pg.transform.flip(pg.image.load(f"ex03/fig/explosion.gif"), False, False)
+        self.imgs = [exp_img, pg.transform.flip(exp_img, True, True)]
+        self.rct = exp_img.get_rect()
+        self.rct.x = bomb.rct.centerx
+        self.rct.y = bomb.rct.centery
+        self.life = 100
+
+    def update(self, screen, life):
+        if life >= 50:
+            screen.blit(self.imgs[0], self.rct)
+        else:
+            screen.blit(self.imgs[1], self.rct)
+        
+
+
 def main():
     pg.display.set_caption("たたかえ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))    
@@ -145,7 +167,9 @@ def main():
     bird = Bird(3, (900, 400))
     #bomb = Bomb((255, 0, 0), 10)
     bombs = [Bomb((255, 0, 0), 10) for _ in range(NUM_OF_BOMBS)]
+    exps = []  #[Explosion(bombs[_]) for _ in range(NUM_OF_BOMBS)]
     beam = None
+    life = 100
 
     clock = pg.time.Clock()
     tmr = 0
@@ -167,7 +191,12 @@ def main():
             
         for i, bomb in enumerate(bombs):
             if beam != None:
-                if bomb.rct.colliderect(beam.rct):
+                if bomb.rct.colliderect(beam.rct):  # 爆弾を撃ち落とした時の処理
+                    exps.append(Explosion(bombs[i]))
+                    while life >= 0:
+                        life -= 1
+                        exps[-1].update(screen, life)
+                    life += 100
                     bombs[i] = None
                     beam = None
                     bird.change_img(6, screen)
