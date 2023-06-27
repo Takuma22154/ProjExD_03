@@ -145,14 +145,14 @@ class Explosion:
     爆弾を撃ち落とした時のエフェクト表示に関するクラス
     """
     def __init__(self, bomb:Bomb):
-        exp_img = pg.transform.flip(pg.image.load(f"ex03/fig/explosion.gif"), False, False)
+        exp_img = pg.transform.flip(pg.image.load(f"ex03/fig/explosion.gif"), False, False)  # 爆発の画像の挿入
         self.imgs = [exp_img, pg.transform.flip(exp_img, True, True)]
         self.rct = exp_img.get_rect()
         self.rct.x = bomb.rct.centerx
         self.rct.y = bomb.rct.centery
         self.life = 100
 
-    def update(self, screen, life):
+    def update(self, screen, life):  # 時間に応じた画像の変更（未動作）
         if life >= 50:
             screen.blit(self.imgs[0], self.rct)
         else:
@@ -193,7 +193,7 @@ def main():
             if beam != None:
                 if bomb.rct.colliderect(beam.rct):  # 爆弾を撃ち落とした時の処理
                     exps.append(Explosion(bombs[i]))  # エフェクトのリストへの格納
-                    while life >= 0:
+                    while life >= 0:  # 199行目まで画像の変更の呼び出し（未動作）
                         life -= 1
                         exps[-1].update(screen, life)
                     life += 100
