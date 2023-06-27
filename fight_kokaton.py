@@ -167,7 +167,7 @@ def main():
     bird = Bird(3, (900, 400))
     #bomb = Bomb((255, 0, 0), 10)
     bombs = [Bomb((255, 0, 0), 10) for _ in range(NUM_OF_BOMBS)]
-    exps = []  #[Explosion(bombs[_]) for _ in range(NUM_OF_BOMBS)]
+    exps = []
     beam = None
     life = 100
 
@@ -192,7 +192,7 @@ def main():
         for i, bomb in enumerate(bombs):
             if beam != None:
                 if bomb.rct.colliderect(beam.rct):  # 爆弾を撃ち落とした時の処理
-                    exps.append(Explosion(bombs[i]))
+                    exps.append(Explosion(bombs[i]))  # エフェクトのリストへの格納
                     while life >= 0:
                         life -= 1
                         exps[-1].update(screen, life)
